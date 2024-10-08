@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.metrostate.gui.AppController">
+
+    <!-- Network Traffic Table as a placeholder -->
+    <center>
+        <TableView fx:id="trafficTable">
+            <placeholder>
+                <Label text="No traffic data available" />
+            </placeholder>
+            <columns>
+                <TableColumn text="Source IP" fx:id="ipColumn"/>
+                <TableColumn text="Port" fx:id="portColumn"/>
+                <TableColumn text="Protocol" fx:id="protocolColumn"/>
+                <TableColumn text="Timestamp" fx:id="timestampColumn"/>
+            </columns>
+        </TableView>
+
+    </center>
+
+</BorderPane>
