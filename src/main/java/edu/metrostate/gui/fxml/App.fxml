@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/20" fx:controller="edu.metrostate.gui.AppController">
+    <top>
+        <ToolBar>
+            <Button text="Clear Alerts" onAction="#clearAlerts"/>
+        </ToolBar>
+    </top>
+
+    <center>
+        <TableView fx:id="trafficTable">
+            <columns>
+                <TableColumn text="Timestamp" fx:id="timestampColumn"/>
+                <TableColumn text="Source IP" fx:id="ipColumn"/>
+                <TableColumn text="Port" fx:id="portColumn"/>
+                <TableColumn text="Protocol" fx:id="protocolColumn"/>
+                <TableColumn text="Message" fx:id="messageColumn"/>
+            </columns>
+        </TableView>
+    </center>
+</BorderPane>

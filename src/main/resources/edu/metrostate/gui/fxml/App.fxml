@@ -1,24 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.control.Button?>
 
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.metrostate.gui.AppController">
-
-    <!-- Network Traffic Table as a placeholder -->
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="edu.metrostate.gui.AppController">
+    <top>
+        <ToolBar>
+            <Button text="Clear Alerts" onAction="#clearAlerts"/>
+        </ToolBar>
+    </top>
     <center>
         <TableView fx:id="trafficTable">
-            <placeholder>
-                <Label text="No traffic data available" />
-            </placeholder>
             <columns>
-                <TableColumn text="Source IP" fx:id="ipColumn"/>
-                <TableColumn text="Port" fx:id="portColumn"/>
-                <TableColumn text="Protocol" fx:id="protocolColumn"/>
-                <TableColumn text="Timestamp" fx:id="timestampColumn"/>
+                <TableColumn fx:id="timestampColumn" text="Timestamp" prefWidth="200.0"/>
+                <TableColumn fx:id="ipColumn" text="Source IP" prefWidth="150.0"/>
+                <TableColumn fx:id="portColumn" text="Port" prefWidth="100.0"/>
+                <TableColumn fx:id="protocolColumn" text="Protocol" prefWidth="100.0"/>
+                <TableColumn fx:id="messageColumn" text="Message" prefWidth="250.0"/>
             </columns>
         </TableView>
-
     </center>
-
 </BorderPane>
