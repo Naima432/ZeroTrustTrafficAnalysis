@@ -20,4 +20,5 @@ javafx {
 dependencies {
     implementation 'org.openjfx:javafx-controls:20'
     implementation 'org.openjfx:javafx-fxml:20'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.0'
 }

@@ -172,7 +172,7 @@ public class AppController {
         });
     }
 
-    private void addSystemAlert(String message) {
+    public void addSystemAlert(String message) {
         Alert systemAlert = new Alert(
                 "System",
                 0,
