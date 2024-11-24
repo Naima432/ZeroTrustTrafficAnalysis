@@ -1,0 +1,18 @@
+{
+  "port_monitoring": [80, 443, 22],
+  "ip_blacklist": ["192.168.1.100", "10.0.0.200"],
+  "ip_whitelist": ["192.168.1.1", "10.0.0.1"],
+  "traffic_volume_threshold": {
+    "bytes": 1000000,
+    "time_window_seconds": 60
+  },
+  "protocol_anomalies": ["ftp", "telnet"],
+  "time_based_access": {
+    "allowed_hours": ["08:00-18:00"],
+    "blocked_hours": ["18:00-08:00"]
+  },
+  "geolocation": {
+    "allowed_countries": ["US", "CA"],
+    "blocked_countries": ["RU", "CN"]
+  }
+}
