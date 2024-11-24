@@ -20,4 +20,6 @@ javafx {
 dependencies {
     implementation 'org.openjfx:javafx-controls:20'
     implementation 'org.openjfx:javafx-fxml:20'
+    implementation 'javax.mail:javax.mail-api:1.6.2'
+    implementation 'com.sun.mail:javax.mail:1.6.2'
 }
