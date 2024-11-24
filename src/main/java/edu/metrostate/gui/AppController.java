@@ -9,10 +9,14 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+
+import javax.mail.*;
+import javax.mail.internet.*;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Properties;
 
 public class AppController {
     @FXML
@@ -50,7 +54,7 @@ public class AppController {
         // Set up the table data
         trafficTable.setItems(alertData);
 
-        // initial system message
+        // Initial system message
         addSystemAlert("System initializing...");
 
         // Check Snort status and start mode
@@ -58,7 +62,6 @@ public class AppController {
     }
 
     private void checkSnortAndInitialize() {
-        // detect running Snort instance
         isSnortRunning = isSnortRunning();
 
         if (isSnortRunning) {
@@ -123,34 +126,18 @@ public class AppController {
 
     private void addDemoAlerts() {
         Alert[] demoAlerts = {
-                new Alert(
-                        "192.168.1.100",
-                        80,
-                        "TCP",
+                new Alert("192.168.1.100", 80, "TCP",
                         LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME),
-                        "Demo Alert: HTTP Traffic Detected"
-                ),
-                new Alert(
-                        "10.0.0.15",
-                        443,
-                        "TCP",
+                        "Demo Alert: HTTP Traffic Detected"),
+                new Alert("10.0.0.15", 443, "TCP",
                         LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME),
-                        "Demo Alert: HTTPS Connection"
-                ),
-                new Alert(
-                        "172.16.0.50",
-                        53,
-                        "UDP",
+                        "Demo Alert: HTTPS Connection"),
+                new Alert("172.16.0.50", 53, "UDP",
                         LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME),
-                        "Demo Alert: DNS Query"
-                ),
-                new Alert(
-                        "192.168.1.200",
-                        22,
-                        "TCP",
+                        "Demo Alert: DNS Query"),
+                new Alert("192.168.1.200", 22, "TCP",
                         LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME),
-                        "Demo Alert: SSH Connection Attempt"
-                )
+                        "Demo Alert: SSH Connection Attempt")
         };
 
         Platform.runLater(() -> {
@@ -165,21 +152,57 @@ public class AppController {
         Platform.runLater(() -> {
             alertData.add(0, alert);
 
-            // Limit the number of displayed alerts to prevent memory issues
             if (alertData.size() > 1000) {
                 alertData.remove(1000, alertData.size());
+            }
+
+            // Send email notifications for alerts
+            if (!"INFO".equalsIgnoreCase(alert.getProtocol())) { // Example condition
+                sendEmailNotification(alert);
             }
         });
     }
 
-    public void addSystemAlert(String message) {
-        Alert systemAlert = new Alert(
-                "System",
-                0,
-                "INFO",
-                LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME),
-                message
-        );
+    private void sendEmailNotification(Alert alert) {
+        String to = "example@gmail.com";
+        String from = "example@gmail.com";
+        String host = "smtp.example.com";
+
+        Properties properties = System.getProperties();
+        properties.setProperty("mail.smtp.host", host);
+        properties.put("mail.smtp.auth", "true");
+        properties.put("mail.smtp.port", "587");
+        properties.put("mail.smtp.starttls.enable", "true");
+
+        Session session = Session.getInstance(properties, new Authenticator() {
+            @Override
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication("example@gmail.com", "password");
+            }
+        });
+
+        try {
+            MimeMessage message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(from));
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
+            message.setSubject("New Network Alert Detected");
+            message.setText("Alert Details:\n" +
+                    "IP: " + alert.getSourceIP() + "\n" +
+                    "Port: " + alert.getPort() + "\n" +
+                    "Protocol: " + alert.getProtocol() + "\n" +
+                    "Message: " + alert.getMessage() + "\n" +
+                    "Timestamp: " + alert.getTimestamp());
+
+            Transport.send(message);
+            addSystemAlert("Email notification sent for alert: " + alert.getMessage());
+        } catch (MessagingException mex) {
+            addSystemAlert("Failed to send email: " + mex.getMessage());
+        }
+    }
+
+    private void addSystemAlert(String message) {
+        Alert systemAlert = new Alert("System", 0, "INFO",
+                LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME), message);
         addAlert(systemAlert);
     }
 
@@ -188,7 +211,6 @@ public class AppController {
         alertData.clear();
         addSystemAlert("Alert history cleared");
 
-        // If in demo mode, add new demo alerts
         if (!isSnortRunning) {
             addDemoAlerts();
         } else {
