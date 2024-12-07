@@ -10,6 +10,8 @@
     <top>
         <ToolBar>
             <Button text="Clear Alerts" onAction="#clearAlerts"/>
+            <Button fx:id="sendToEmailButton" text="Send to Email" onAction="#SendToEmailButtonClicked"/>
+            <Button text="Generate Report" onAction="#generateReportClicked"/>
         </ToolBar>
     </top>
     <center>
