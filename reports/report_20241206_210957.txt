@@ -1,0 +1,15 @@
+Zero Trust Network Traffic Analysis Report
+Generated at: 2024-12-06T21:09:57.029359
+
+Current Alerts:
+2024-12-06T21:09:55.0107255 - System:0 (INFO) Failed to send email: Couldn't connect to host, port: smtp.example.com, 587; timeout -1
+2024-12-06T21:09:55.0067179 - System:0 (INFO) Send to Email button clicked. Sending all alerts.
+2024-12-06T21:09:50.7883181 - System:0 (INFO) Failed to send email: Couldn't connect to host, port: smtp.example.com, 587; timeout -1
+2024-12-06T21:09:50.6140933 - System:0 (INFO) Send to Email button clicked. Sending all alerts.
+2024-12-06T21:09:47.627703 - System:0 (INFO) Demo Mode Active - Showing sample alerts
+2024-12-06T21:09:47.4239371 - System:0 (INFO) Failed to load rules in demo mode: src\main\resources\config\manual_rules.json (The system cannot find the path specified)
+2024-12-06T21:09:47.3059157 - System:0 (INFO) Snort is not running. Starting in demo mode...
+2024-12-06T21:09:47.1697478 - System:0 (INFO) System initializing...
+2024-12-06T21:09:47.4239371 - 192.168.1.100:80 (TCP) Demo Alert: HTTP Traffic Detected
+2024-12-06T21:09:47.4239371 - 10.0.0.15:443 (TCP) Demo Alert: HTTPS Connection
+2024-12-06T21:09:47.4239371 - 172.16.0.50:22 (TCP) Demo Alert: SSH Connection Attempt

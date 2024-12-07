@@ -57,15 +57,4 @@ public class Alert {
     public void setMessage(String message) {
         this.message = message;
     }
-
-    @Override
-    public String toString() {
-        return "Alert{" +
-                "timestamp='" + timestamp + '\'' +
-                ", sourceIP='" + sourceIP + '\'' +
-                ", port=" + port +
-                ", protocol='" + protocol + '\'' +
-                ", message='" + message + '\'' +
-                '}';
-    }
 }

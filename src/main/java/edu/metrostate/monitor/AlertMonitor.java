@@ -10,7 +10,6 @@ import java.io.RandomAccessFile;
 import java.nio.file.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 import java.util.logging.Logger;
 
 public class AlertMonitor implements Runnable {
@@ -18,21 +17,29 @@ public class AlertMonitor implements Runnable {
     private final String alertFilePath;
     private final AppController controller;
     private boolean running = true;
-    private RuleConfig rules;
+    private RuleConfig rules; // expose via getter
     private static final Logger logger = Logger.getLogger(AlertMonitor.class.getName());
 
     public AlertMonitor(String alertFilePath, AppController controller) {
         this.alertFilePath = alertFilePath;
         this.controller = controller;
 
-        // Load custom rules from the RuleConfig
         try {
-            this.rules = RuleConfig.loadFromFile("src/main/resources/config/manual_rules.json");
-            controller.addSystemAlert("Custom rules loaded successfully from manual_rules.json");
+            String rulesPath = "src/main/resources/config/manual_rules.json";
+            this.rules = RuleConfig.loadFromFile(rulesPath);
+            controller.addAlert(new Alert("System", 0, "INFO",
+                    LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME),
+                    "Custom rules loaded successfully from " + rulesPath));
         } catch (IOException e) {
-            controller.addSystemAlert("Failed to load custom rules: " + e.getMessage());
+            controller.addAlert(new Alert("System", 0, "INFO",
+                    LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME),
+                    "Failed to load custom rules: " + e.getMessage()));
             logger.severe("Failed to load custom rules: " + e.getMessage());
         }
+    }
+
+    public RuleConfig getRules() {
+        return this.rules;
     }
 
     @Override
@@ -40,7 +47,9 @@ public class AlertMonitor implements Runnable {
         try {
             monitorAlerts();
         } catch (IOException | InterruptedException e) {
-            controller.addSystemAlert("Error monitoring alerts: " + e.getMessage());
+            controller.addAlert(new Alert("System", 0, "INFO",
+                    LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME),
+                    "Error monitoring alerts: " + e.getMessage()));
             logger.severe("Error monitoring alerts: " + e.getMessage());
         }
     }
@@ -75,20 +84,22 @@ public class AlertMonitor implements Runnable {
             String line;
             while ((line = file.readLine()) != null) {
                 Alert alert = parseAlert(line);
-                if (alert != null && isAlertValid(alert)) {
+                // Validation handled by controller using getRules()
+                if (alert != null) {
                     controller.addAlert(alert);
                 }
             }
             return file.length();
         } catch (IOException e) {
-            controller.addSystemAlert("Error processing alerts: " + e.getMessage());
+            controller.addAlert(new Alert("System", 0, "INFO",
+                    LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME),
+                    "Error processing alerts: " + e.getMessage()));
             logger.severe("Error processing alerts: " + e.getMessage());
             return lastSize;
         }
     }
 
     private Alert parseAlert(String line) {
-        // Parse Snort alert line into an Alert object
         line = line.replace("\"", "");
         String[] fields = line.split(",");
         if (fields.length >= 7) {
@@ -100,72 +111,6 @@ public class AlertMonitor implements Runnable {
             return new Alert(srcIP, srcPort, protocol, timestamp, msg);
         }
         return null;
-    }
-
-    private boolean isAlertValid(Alert alert) {
-        // Validate the alert based on custom rules
-
-        // Check IP Blacklist
-        if (rules.ipBlacklist != null && rules.ipBlacklist.contains(alert.getSourceIP())) {
-            controller.addSystemAlert("Blocked alert from blacklisted IP: " + alert.getSourceIP());
-            return true;
-        }
-
-        // Check IP Whitelist
-        if (rules.ipWhitelist != null && rules.ipWhitelist.contains(alert.getSourceIP())) {
-            return false; // Ignore alerts from whitelisted IPs
-        }
-
-        // Check Port Monitoring
-        if (rules.portMonitoring != null && rules.portMonitoring.contains(alert.getPort())) {
-            controller.addSystemAlert("Monitored port activity detected: " + alert.getPort());
-            return true;
-        }
-
-        // Check Protocol Anomalies
-        if (rules.protocolAnomalies != null && rules.protocolAnomalies.contains(alert.getProtocol().toLowerCase())) {
-            controller.addSystemAlert("Anomalous protocol detected: " + alert.getProtocol());
-            return true;
-        }
-
-        // Placeholder for Traffic Volume Threshold (if needed later)
-        // This requires maintaining state for observed traffic, which is not yet implemented
-
-        // Time-Based Access Checks (if applicable)
-        if (rules.timeBasedAccess != null) {
-            LocalDateTime now = LocalDateTime.now();
-            String currentTime = now.format(DateTimeFormatter.ofPattern("HH:mm"));
-
-            if (rules.timeBasedAccess.containsKey("blocked_hours")) {
-                List<String> blockedHours = rules.timeBasedAccess.get("blocked_hours");
-                for (String range : blockedHours) {
-                    String[] hours = range.split("-");
-                    if (currentTime.compareTo(hours[0]) >= 0 && currentTime.compareTo(hours[1]) <= 0) {
-                        controller.addSystemAlert("Blocked time-based access for alert at: " + currentTime);
-                        return true;
-                    }
-                }
-            }
-
-            if (rules.timeBasedAccess.containsKey("allowed_hours")) {
-                List<String> allowedHours = rules.timeBasedAccess.get("allowed_hours");
-                boolean allowed = false;
-                for (String range : allowedHours) {
-                    String[] hours = range.split("-");
-                    if (currentTime.compareTo(hours[0]) >= 0 && currentTime.compareTo(hours[1]) <= 0) {
-                        allowed = true;
-                        break;
-                    }
-                }
-                if (!allowed) {
-                    controller.addSystemAlert("Alert blocked outside allowed hours: " + currentTime);
-                    return true;
-                }
-            }
-        }
-
-        // If no custom rules matched, consider the alert valid
-        return true;
     }
 
     public void stop() {
