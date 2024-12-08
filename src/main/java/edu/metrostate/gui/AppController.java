@@ -224,8 +224,6 @@ public class AppController {
     }
 
     private void sendAllAlertsEmail(String content) {
-        // UPDATE THIS SECTION WITH REAL SMTP SETTINGS
-        // Example: Using Gmail SMTP with an app password
         String to = "recipient@example.com";  // Replace with the recipient email
         String from = "your_gmail@gmail.com"; // Replace with your Gmail address
         String host = "smtp.gmail.com";
@@ -240,7 +238,7 @@ public class AppController {
         Session session = Session.getInstance(properties, new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
-                // Replace "your_gmail@gmail.com" and "your_app_password" with actual credentials
+                // Replace with actual credentials
                 return new PasswordAuthentication("your_gmail@gmail.com", "your_app_password");
             }
         });
