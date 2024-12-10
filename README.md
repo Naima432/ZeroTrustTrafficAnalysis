@@ -4,6 +4,9 @@ This project provides a Zero Trust network traffic monitoring and alerting syste
 ### Features
 Zero Trust Monitoring: Applies custom rules to identify and block suspicious alerts.
 Integration with Snort: If Snort is running and producing alerts, the application monitors Snort’s log file in real time.
+IDS and IPS Modes:
+IDS: Intrusion detection with Snort to monitor traffic passively.
+IPS: Intrusion prevention using Snort in inline mode to actively block malicious traffic.
 Demo Mode: If Snort is not running, the system falls back to demo mode, showing sample alerts for testing and presentation.
 Custom Rules: Loads rules from manual_rules.json, which can specify blacklists, whitelists, ports to monitor, protocol anomalies, and time-based access.
 Email Notifications: Send a summary of all current alerts via email by clicking a button in the GUI.
@@ -63,6 +66,41 @@ When you start the Java application, it will detect Snort and read alerts from t
 
 ### Running in Demo Mode
 If Snort is not running, the application automatically falls back to demo mode and shows sample alerts. This mode is useful for testing and presentations.
+
+## Batch Scripts for IDS and IPS
+Two batch scripts are provided to simplify starting Snort in IDS or IPS mode:
+
+IDS Mode (start_snort_ids.bat):
+
+Runs Snort in intrusion detection mode.
+Logs alerts to C:\Snort\log\alert.
+
+@echo off
+REM Start Snort in IDS mode
+snort.exe -i eth0 -c C:\Snort\etc\snort.conf -A console -l C:\Snort\log
+pause
+IPS Mode (start_snort_ips.bat):
+
+Runs Snort in intrusion prevention mode.
+Uses afpacket to actively block malicious traffic.
+
+@echo off
+REM Start Snort in IPS mode
+snort.exe -Q --daq afpacket --daq-var device=eth0 -c C:\Snort\etc\snort.conf -A console
+pause
+
+## How to Use Batch Scripts
+Place the batch files in the root directory of your project (e.g., ZeroTrustTrafficAnalysis).
+Ensure Snort's executable is in your PATH or use its full path in the script.
+Run the appropriate script by double-clicking it or executing it in the terminal.
+Running in IDS Mode
+Command:
+.\start_snort_ids.bat
+This mode passively monitors traffic and logs alerts to C:\Snort\log\alert.
+Running in IPS Mode
+Command:
+.\start_snort_ips.bat
+This mode actively blocks malicious traffic while monitoring and logging alerts.
 
 ### Building and Running the Application
 From the project root directory, run:
