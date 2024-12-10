@@ -17,6 +17,7 @@ Internet Connection (for Email): If using a real SMTP server for sending emails.
 ### Directory Structure
 Ensure your directory structure looks like this:
 
+
 ZeroTrustTrafficAnalysis
 ├── build.gradle
 ├── gradlew
