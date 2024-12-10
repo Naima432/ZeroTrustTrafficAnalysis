@@ -25,6 +25,8 @@ ZeroTrustTrafficAnalysis
 ├── build.gradle
 ├── gradlew
 ├── gradlew.bat
+├── start_snort_ids.bat        
+├── start_snort_ips.bat 
 ├── src
 │   ├── main
 │   │   ├── java
