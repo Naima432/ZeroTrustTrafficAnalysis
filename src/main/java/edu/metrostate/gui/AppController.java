@@ -225,7 +225,7 @@ public class AppController {
 
     private void sendAllAlertsEmail(String content) {
         String to = "recipient@example.com";  // Replace with the recipient email
-        String from = "your_gmail@gmail.com"; // Replace with your Gmail address
+        String from = "your_gmail@gmail.com"; // Replace with your email
         String host = "smtp.gmail.com";
 
         Properties properties = System.getProperties();
@@ -234,11 +234,10 @@ public class AppController {
         properties.put("mail.smtp.port", "587");
         properties.put("mail.smtp.starttls.enable", "true");
 
-        // Provide your Gmail username and an App Password
+        // Provide your email username and an App Password
         Session session = Session.getInstance(properties, new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
-                // Replace with actual credentials
                 return new PasswordAuthentication("your_gmail@gmail.com", "your_app_password");
             }
         });
