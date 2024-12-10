@@ -1,0 +1,15 @@
+Zero Trust Network Traffic Analysis Report
+Generated at: 2024-12-07T18:09:31.6209832
+
+Current Alerts:
+2024-12-07T18:09:03.5344855 - System:0 (INFO) Failed to send email: 535-5.7.8 Username and Password not accepted. For more information, go to
+535 5.7.8  https://support.google.com/mail/?p=BadCredentials 6a1803df08f44-6d8e0e8c1dfsm30803246d6.59 - gsmtp
+
+2024-12-07T18:09:02.2888489 - System:0 (INFO) Send to Email button clicked. Attempting to send all alerts.
+2024-12-07T18:08:59.4471014 - System:0 (INFO) Monitored port activity detected: 22
+2024-12-07T18:08:59.4471014 - System:0 (INFO) Monitored port activity detected: 443
+2024-12-07T18:08:59.4471014 - System:0 (INFO) Blocked alert from blacklisted IP: 192.168.1.100
+2024-12-07T18:08:59.4471014 - System:0 (INFO) Demo Mode Active - Showing sample alerts
+2024-12-07T18:08:59.4460437 - System:0 (INFO) Alert history cleared
+2024-12-07T18:08:59.4460437 - 10.0.0.15:443 (TCP) Demo Alert: HTTPS Connection
+2024-12-07T18:08:59.4460437 - 172.16.0.50:22 (TCP) Demo Alert: SSH Connection Attempt

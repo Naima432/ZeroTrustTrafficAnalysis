@@ -1,0 +1,17 @@
+Zero Trust Network Traffic Analysis Report
+Generated at: 2024-12-07T16:45:52.1314846
+
+Current Alerts:
+2024-12-07T16:45:46.326408 - System:0 (INFO) Failed to send email: 535-5.7.8 Username and Password not accepted. For more information, go to
+535 5.7.8  https://support.google.com/mail/?p=BadCredentials af79cd13be357-7b6b5a66dcesm302639185a.53 - gsmtp
+
+2024-12-07T16:45:44.9718306 - System:0 (INFO) Send to Email button clicked. Attempting to send all alerts.
+2024-12-07T16:45:42.1204322 - System:0 (INFO) Monitored port activity detected: 22
+2024-12-07T16:45:42.1194319 - System:0 (INFO) Monitored port activity detected: 443
+2024-12-07T16:45:42.1194319 - System:0 (INFO) Blocked alert from blacklisted IP: 192.168.1.100
+2024-12-07T16:45:42.1194319 - System:0 (INFO) Demo Mode Active - Showing sample alerts
+2024-12-07T16:45:41.6422354 - System:0 (INFO) Rules loaded in demo mode from src/main/resources/config/manual_rules.json
+2024-12-07T16:45:41.2579251 - System:0 (INFO) Snort is not running. Starting in demo mode...
+2024-12-07T16:45:41.0913548 - System:0 (INFO) System initializing...
+2024-12-07T16:45:41.6432417 - 10.0.0.15:443 (TCP) Demo Alert: HTTPS Connection
+2024-12-07T16:45:41.6432417 - 172.16.0.50:22 (TCP) Demo Alert: SSH Connection Attempt
