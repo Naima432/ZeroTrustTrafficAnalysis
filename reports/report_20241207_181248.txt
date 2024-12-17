@@ -1,0 +1,10 @@
+Zero Trust Network Traffic Analysis Report
+Generated at: 2024-12-07T18:12:48.8612118
+
+Current Alerts:
+2024-12-07T18:12:36.1451841 - System:0 (INFO) Failed to send email: 535-5.7.8 Username and Password not accepted. For more information, go to
+535 5.7.8  https://support.google.com/mail/?p=BadCredentials af79cd13be357-7b6cf98b393sm32255285a.47 - gsmtp
+
+2024-12-07T18:12:34.8276452 - System:0 (INFO) Send to Email button clicked. Attempting to send all alerts.
+2024-12-07T18:12:26.3265451 - System:0 (INFO) Monitoring for new alerts...
+2024-12-07T18:12:26.3265451 - System:0 (INFO) Alert history cleared
